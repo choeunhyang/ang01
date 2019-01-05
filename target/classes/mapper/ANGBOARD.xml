@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ang.back.ANGBOARD">
+	<select id="angboardlist" resultType="AngBoard">
+		select * from ang_board
+		<where>
+			<if test="title!=null and title!=''">and title like concat('%',#{title},'%')</if>
+			<if test="content!=null and content!=''">and content like concat('%',#{content},'%')</if>
+			<if test="writer!=0 and writer!=null">and writer = #{writer}</if>
+		</where>
+		order by num desc
+	</select>
+	<select id="selectang" resultType="AngBoard">
+		select * from ang_board
+		where num=#{num}
+	</select>
+	<insert id="insertang" parameterType="AngBoard">
+		insert into ang_board (title,content,writer,wdate)
+		values(#{title},#{content},#{writer},now())
+	</insert>
+	<delete id="deleteang" parameterType="AngBoard">
+		delete from ang_board
+		where num=
+		<foreach item="num" index="index" collection="list" open="(" separator="," close=")">
+			#{num}
+		</foreach>
+	</delete>
+</mapper>
